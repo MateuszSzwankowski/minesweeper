@@ -1,5 +1,7 @@
+package app;
 
-enum MinesweeperConfig {
+
+public enum MinesweeperConfig {
 
     BEGINNER (9, 9, 10),
     INTERMEDIATE (16,16,40),
@@ -17,15 +19,15 @@ enum MinesweeperConfig {
         this.numMines = numMines;
     }
 
-    int getNumRows() {
+    public int getNumRows() {
         return numRows;
     }
 
-    int getNumColumns() {
+    public int getNumColumns() {
         return numColumns;
     }
 
-    int getNumMines() {
+    public int getNumMines() {
         return numMines;
     }
 
