@@ -1,20 +1,20 @@
 package app.view;
 
-import app.FieldState;
+import app.TileState;
 
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 
 
-class DefaultFieldView implements FieldView {
+class DefaultTileView implements TileView {
 
     private final JButton button;
     private int surroundingMinesCount = 0;
     private final String MINE_SYMBOL = "\u2622";
     private final String FLAG_SYMBOL = "\u2691";
 
-    DefaultFieldView() {
+    DefaultTileView() {
         button = new JButton(" ");
         button.setFont(new Font(null, Font.BOLD, 15));
         button.setMargin(new Insets(0, 0, 0, 0));
@@ -93,11 +93,11 @@ class DefaultFieldView implements FieldView {
         if (evt.getPropertyName().equals("mineCount")) {
             setSurroundingMinesCount((int) evt.getNewValue());
         } else if (evt.getPropertyName().equals("state")) {
-            handleStateChange((FieldState) evt.getNewValue());
+            handleStateChange((TileState) evt.getNewValue());
         }
     }
 
-    private void handleStateChange(FieldState newState) {
+    private void handleStateChange(TileState newState) {
         switch (newState) {
             case EXPLODED:
                 showExplosion();

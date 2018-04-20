@@ -1,8 +1,5 @@
-package test;
+package app.model;
 
-import app.model.BoardModel;
-import app.model.BoardState;
-import app.model.Field;
 import app.MinesweeperConfig;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,52 +27,52 @@ public class BoardModelTest {
 
     @Test
     public void getFields() {
-        Field[][] fields = board.getFields();
+        Tile[][] tiles = board.getTiles();
 
-        assertEquals(fields.length, numRows);
-        assertEquals(fields[0].length, numColumns);
+        assertEquals(tiles.length, numRows);
+        assertEquals(tiles[0].length, numColumns);
 
-        assertEquals(fields[0][0].getRow(), 0);
-        assertEquals(fields[0][0].getColumn(), 0);
+        assertEquals(tiles[0][0].getRow(), 0);
+        assertEquals(tiles[0][0].getColumn(), 0);
 
-        assertEquals(fields[3][8].getRow(), 3);
-        assertEquals(fields[3][8].getColumn(), 8);
+        assertEquals(tiles[3][8].getRow(), 3);
+        assertEquals(tiles[3][8].getColumn(), 8);
     }
 
     @Test
     public void repositionMine() {
-        Field fieldWithMine = board.getFields()[2][2];
-        Field repositionTarget = board.getFields()[15][2];
+        Tile tileWithMine = board.getTiles()[2][2];
+        Tile repositionTarget = board.getTiles()[15][2];
 
-        assertTrue(fieldWithMine.isMine());
+        assertTrue(tileWithMine.isMine());
         assertFalse(repositionTarget.isMine());
 
-        board.repositionMine(fieldWithMine);
+        board.repositionMine(tileWithMine);
 
-        assertFalse(fieldWithMine.isMine());
+        assertFalse(tileWithMine.isMine());
         assertTrue(repositionTarget.isMine());
     }
 
     @Test
     public void getSurroundingFields() {
-        Field field = board.getFields()[0][0];
-        HashSet<Field> neighbours = board.getSurroundingFields(field);
+        Tile tile = board.getTiles()[0][0];
+        HashSet<Tile> neighbours = board.getSurroundingFields(tile);
         assertEquals(neighbours.size(), 3);
-        assertTrue(neighbours.contains(board.getFields()[0][1]));
-        assertTrue(neighbours.contains(board.getFields()[1][0]));
-        assertTrue(neighbours.contains(board.getFields()[1][1]));
+        assertTrue(neighbours.contains(board.getTiles()[0][1]));
+        assertTrue(neighbours.contains(board.getTiles()[1][0]));
+        assertTrue(neighbours.contains(board.getTiles()[1][1]));
 
-        field = board.getFields()[1][1];
-        neighbours = board.getSurroundingFields(field);
+        tile = board.getTiles()[1][1];
+        neighbours = board.getSurroundingFields(tile);
         assertEquals(neighbours.size(), 8);
-        assertTrue(neighbours.contains(board.getFields()[0][0]));
-        assertTrue(neighbours.contains(board.getFields()[0][1]));
-        assertTrue(neighbours.contains(board.getFields()[0][2]));
-        assertTrue(neighbours.contains(board.getFields()[1][0]));
-        assertTrue(neighbours.contains(board.getFields()[1][2]));
-        assertTrue(neighbours.contains(board.getFields()[2][0]));
-        assertTrue(neighbours.contains(board.getFields()[2][1]));
-        assertTrue(neighbours.contains(board.getFields()[2][2]));
+        assertTrue(neighbours.contains(board.getTiles()[0][0]));
+        assertTrue(neighbours.contains(board.getTiles()[0][1]));
+        assertTrue(neighbours.contains(board.getTiles()[0][2]));
+        assertTrue(neighbours.contains(board.getTiles()[1][0]));
+        assertTrue(neighbours.contains(board.getTiles()[1][2]));
+        assertTrue(neighbours.contains(board.getTiles()[2][0]));
+        assertTrue(neighbours.contains(board.getTiles()[2][1]));
+        assertTrue(neighbours.contains(board.getTiles()[2][2]));
     }
 
     @Test

@@ -9,7 +9,7 @@ import java.util.Random;
 
 public class BoardModel {
 
-    private final Field[][] fields;
+    private final Tile[][] tiles;
     private final int numRows;
     private final int numColumns;
     private static Random rnd = new Random();
@@ -25,7 +25,7 @@ public class BoardModel {
         numRows = config.getNumRows();
         int numMines = config.getNumMines();
         fieldsToDiscover = numRows * numColumns - numMines;
-        fields = new Field[numRows][numColumns];
+        tiles = new Tile[numRows][numColumns];
         makeFields();
         placeMines(numMines);
     }
@@ -33,7 +33,7 @@ public class BoardModel {
     private void makeFields() {
         for (int row = 0; row < numRows; row++) {
             for (int column = 0; column < numColumns; column++) {
-                fields[row][column] = new Field(row, column);
+                tiles[row][column] = new Tile(row, column);
             }
         }
     }
@@ -42,31 +42,31 @@ public class BoardModel {
         while (minesToPlace > 0) {
             int col = rnd.nextInt(numColumns);
             int row = rnd.nextInt(numRows);
-            Field field = fields[row][col];
-            if (!field.isMine()) {
-                field.putMine();
+            Tile tile = tiles[row][col];
+            if (!tile.isMine()) {
+                tile.putMine();
                 minesToPlace--;
-                getSurroundingFields(field).forEach(Field::increaseMineCount);
+                getSurroundingFields(tile).forEach(Tile::increaseMineCount);
             }
         }
     }
 
-    public void repositionMine(Field field) {
-        field.removeMine();
-        getSurroundingFields(field).forEach(Field::decreaseMineCount);
+    public void repositionMine(Tile tile) {
+        tile.removeMine();
+        getSurroundingFields(tile).forEach(Tile::decreaseMineCount);
         placeMines(1);
     }
 
-    public HashSet<Field> getSurroundingFields(Field field) {
-        int row = field.getRow();
-        int column = field.getColumn();
-        HashSet<Field> neighbours = new HashSet<>();
+    public HashSet<Tile> getSurroundingFields(Tile tile) {
+        int row = tile.getRow();
+        int column = tile.getColumn();
+        HashSet<Tile> neighbours = new HashSet<>();
         for (int i = row - 1; i <= row + 1; i++) {
             for (int j = column - 1; j <= column + 1; j++) {
                 if ((i != row || j != column)
                         && i >= 0 && i < numRows
                         && j >= 0 && j < numColumns) {
-                    neighbours.add(fields[i][j]);
+                    neighbours.add(tiles[i][j]);
                 }
             }
         }
@@ -78,8 +78,8 @@ public class BoardModel {
         if (fieldsToDiscover == 0) state = FINISHED;
     }
 
-    public Field[][] getFields() {
-        return fields;
+    public Tile[][] getTiles() {
+        return tiles;
     }
 
     public void activate() {

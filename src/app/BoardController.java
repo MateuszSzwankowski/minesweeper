@@ -1,7 +1,7 @@
 package app;
 
-import app.model.Field;
-import app.view.FieldView;
+import app.model.Tile;
+import app.view.TileView;
 import app.view.MainView;
 import app.model.BoardModel;
 import static app.model.BoardState.*;
@@ -18,34 +18,33 @@ public class BoardController {
     private BoardModel model;
     private final MainView GUI;
     private int numFlags = 0;
-    private final Set<Field> fieldsToReveal = new HashSet<>();
+    private final Set<Tile> fieldsToReveal = new HashSet<>();
     private final SwingPropertyChangeSupport flagsLabelUpdater;
 
-    public BoardController(BoardModel model, MainView GUI) {
+    BoardController(BoardModel model, MainView GUI) {
         this.model = model;
         this.GUI = GUI;
-        bindFields();
+
         flagsLabelUpdater = new SwingPropertyChangeSupport(this);
         flagsLabelUpdater.addPropertyChangeListener("flags", GUI);
     }
 
     public void setModel(BoardModel boardModel) {
         model = boardModel;
-        bindFields();
         reset();
     }
 
-    private void bindFields() {
-        FieldView[][] fieldViews = GUI.getFieldViews();
-        Field[][] fields = model.getFields();
-        for (int i = 0; i < fields.length; i++) {
-            for (int j = 0; j < fields[0].length; j++) {
-                Field field = fields[i][j];
-                FieldView fieldView = fieldViews[i][j];
-                fieldView.setSurroundingMinesCount(field.getSurroundingMinesCount());
-                field.getStateChangeSupport().addPropertyChangeListener("state", fieldView);
-                field.getMineCountChangeSupport().addPropertyChangeListener("mineCount", fieldView);
-                fieldView.getButton().addMouseListener((app.MousePressedListener)(e)-> click(field, e));
+    public void bindFields() {
+        TileView[][] tileViews = GUI.getFieldViews();
+        Tile[][] tiles = model.getTiles();
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+                Tile tile = tiles[i][j];
+                TileView tileView = tileViews[i][j];
+                tileView.setSurroundingMinesCount(tile.getSurroundingMinesCount());
+                tile.getStateChangeSupport().addPropertyChangeListener("state", tileView);
+                tile.getMineCountChangeSupport().addPropertyChangeListener("mineCount", tileView);
+                tileView.getButton().addMouseListener((app.MousePressedListener)(e)-> click(tile, e));
             }
         }
     }
@@ -55,43 +54,43 @@ public class BoardController {
         fieldsToReveal.clear();
     }
 
-    public void click(Field field, MouseEvent event) {
+    public void click(Tile tile, MouseEvent event) {
         if (!model.getState().equals(FINISHED)) {
             if (SwingUtilities.isLeftMouseButton(event)) {
-                leftClick(field);
+                leftClick(tile);
             } else if (SwingUtilities.isRightMouseButton(event)) {
-                rightClick(field);
+                rightClick(tile);
             }
         }
     }
 
-    private void leftClick(Field field) {
-        if (field.isFlagged()) {
+    private void leftClick(Tile tile) {
+        if (tile.isFlagged()) {
             return;
         } else if (model.getState().equals(BEFORE_START)) {
             model.activate();
             GUI.startTimer();
-            if (field.isMine()) {
-                model.repositionMine(field);
+            if (tile.isMine()) {
+                model.repositionMine(tile);
             }
         }
 
-        if (field.isRevealed()) {
-            if ( field.getSurroundingMinesCount() == countFlaggedNeighbours(field) ) {
-                revealNeighbours(field);
+        if (tile.isRevealed()) {
+            if ( tile.getSurroundingMinesCount() == countFlaggedNeighbours(tile) ) {
+                revealNeighbours(tile);
             }
         } else {
-            revealField(field);
+            revealField(tile);
         }
     }
 
-    private void rightClick(Field field) {
-        if (!field.isRevealed() && model.getState().equals(ACTIVE)) {
-            if (!field.isFlagged()) {
-                field.setFlag(true);
+    private void rightClick(Tile tile) {
+        if (!tile.isRevealed() && model.getState().equals(ACTIVE)) {
+            if (!tile.isFlagged()) {
+                tile.setFlag(true);
                 numFlags++;
             } else {
-                field.setFlag(false);
+                tile.setFlag(false);
                 numFlags--;
             }
             updateFlagsLabel();
@@ -102,16 +101,16 @@ public class BoardController {
         flagsLabelUpdater.firePropertyChange("flags", null, numFlags);
     }
 
-    private void revealField(Field field) {
-        if (field.isMine()) {
-            field.explode();
+    private void revealField(Tile tile) {
+        if (tile.isMine()) {
+            tile.explode();
             gameFinished(false);
         } else {
-            field.reveal();
+            tile.reveal();
             model.decreaseFieldsToDiscover();
 
-            if (field.getSurroundingMinesCount() == 0) {
-                revealNeighbours(field);
+            if (tile.getSurroundingMinesCount() == 0) {
+                revealNeighbours(tile);
             }
 
             if (model.getState().equals(FINISHED)) {
@@ -120,23 +119,23 @@ public class BoardController {
         }
     }
 
-    private void revealNeighbours(Field field) {
+    private void revealNeighbours(Tile tile) {
         if (anyFieldsToReveal()) {
-            enqueueNeighboursToReveal(field);
+            enqueueNeighboursToReveal(tile);
         } else {
-            enqueueNeighboursToReveal(field);
+            enqueueNeighboursToReveal(tile);
             while (!fieldsToReveal.isEmpty() && model.getState().equals(ACTIVE)) {
-                Field neighbour = fieldsToReveal.iterator().next();
+                Tile neighbour = fieldsToReveal.iterator().next();
                 fieldsToReveal.remove(neighbour);
                 revealField(neighbour);
             }
         }
     }
 
-    private HashSet<Field> getNeighboursToReveal(Field field){
-        HashSet<Field> neighbours = model.getSurroundingFields(field);
-        HashSet<Field> neighboursToReveal = new HashSet<>();
-        for (Field neighbour : neighbours) {
+    private HashSet<Tile> getNeighboursToReveal(Tile tile){
+        HashSet<Tile> neighbours = model.getSurroundingFields(tile);
+        HashSet<Tile> neighboursToReveal = new HashSet<>();
+        for (Tile neighbour : neighbours) {
             if (!neighbour.isRevealed() && !neighbour.isFlagged()) {
                 neighboursToReveal.add(neighbour);
             }
@@ -148,15 +147,15 @@ public class BoardController {
         return !fieldsToReveal.isEmpty();
     }
 
-    private void enqueueNeighboursToReveal(Field field) {
-        HashSet<Field> unrevealedNeighbours = getNeighboursToReveal(field);
+    private void enqueueNeighboursToReveal(Tile tile) {
+        HashSet<Tile> unrevealedNeighbours = getNeighboursToReveal(tile);
         fieldsToReveal.addAll(unrevealedNeighbours);
     }
 
-    private int countFlaggedNeighbours(Field field) {
-        HashSet<Field> neighbours = model.getSurroundingFields(field);
+    private int countFlaggedNeighbours(Tile tile) {
+        HashSet<Tile> neighbours = model.getSurroundingFields(tile);
         int numNeighboursFlagged = 0;
-        for (Field neighbour : neighbours) {
+        for (Tile neighbour : neighbours) {
             if (neighbour.isFlagged()) {
                 numNeighboursFlagged++;
             }
@@ -171,18 +170,18 @@ public class BoardController {
     }
 
     private void showMines() {
-        for (Field[] row : model.getFields()) {
-            for (Field field : row) {
-                field.gameOver();
+        for (Tile[] row : model.getTiles()) {
+            for (Tile tile : row) {
+                tile.gameOver();
             }
         }
     }
 
     private void showFlags() {
-        for (Field[] row : model.getFields()) {
-            for (Field field : row) {
-                if (field.isMine() && !field.isFlagged()){
-                    field.setFlag(true);
+        for (Tile[] row : model.getTiles()) {
+            for (Tile tile : row) {
+                if (tile.isMine() && !tile.isFlagged()){
+                    tile.setFlag(true);
                     numFlags++;
                     updateFlagsLabel();
                 }

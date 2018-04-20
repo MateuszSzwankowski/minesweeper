@@ -1,7 +1,7 @@
 package app;
 
 
-public enum FieldState {
+public enum TileState {
 
     HIDDEN,
     FLAGGED,

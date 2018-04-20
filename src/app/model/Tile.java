@@ -1,30 +1,30 @@
 package app.model;
 
-import app.FieldState;
-import static app.FieldState.*;
+import app.TileState;
+import static app.TileState.*;
 
 import javax.swing.event.SwingPropertyChangeSupport;
 
 
-public class Field {
+public class Tile {
 
     private final SwingPropertyChangeSupport stateChange;
     private final SwingPropertyChangeSupport mineCountChange;
-    private FieldState state = HIDDEN;
+    private TileState state = HIDDEN;
     private final int row;
     private final int column;
     private boolean mine = false;
     private int mineCount = 0;
 
-    Field(int row, int column) {
+    Tile(int row, int column) {
         this.row = row;
         this.column = column;
         stateChange = new SwingPropertyChangeSupport(this);
         mineCountChange = new SwingPropertyChangeSupport(this);
     }
 
-    private void changeState(FieldState newState) {
-        FieldState oldState = state;
+    private void changeState(TileState newState) {
+        TileState oldState = state;
         state = newState;
         stateChange.firePropertyChange("state", oldState, newState);
     }

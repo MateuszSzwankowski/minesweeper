@@ -19,7 +19,7 @@ public class MainController
         boardModel = new BoardModel(config);
         GUI = new MainView(config);
         boardController = new BoardController(boardModel, GUI);
-
+        boardController.bindFields();
         GUI.getRestartButton().addActionListener(e -> restart());
         GUI.getExitButton().addActionListener(e -> exit());
 
@@ -30,19 +30,20 @@ public class MainController
         }
     }
 
-    private void newGame(MinesweeperConfig config) {
+     private void newGame(MinesweeperConfig config) {
         this.config = config;
         restart();
     }
 
-    private void restart() {
+     private void restart() {
         GUI.stopTimer();
         GUI.rebuildBoard(config);
         boardModel = new BoardModel(config);
         boardController.setModel(boardModel);
+        boardController.bindFields();
     }
 
-    private void exit() {
+     private void exit() {
         GUI.stopTimer();
         GUI.disposeFrame();
     }

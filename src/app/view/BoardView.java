@@ -11,12 +11,12 @@ class BoardView {
 
     private final JPanel innerPanel;
     private final JScrollPane panel;
-    private FieldView[][] fieldViews;
+    private TileView[][] tileViews;
 
     BoardView(MinesweeperConfig config) {
         int numColumns = config.getNumColumns();
         int numRows = config.getNumRows();
-        fieldViews = new FieldView[numRows][numColumns];
+        tileViews = new TileView[numRows][numColumns];
         innerPanel = new JPanel();
         innerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         innerPanel.setLayout(new GridLayout(numRows, numColumns));
@@ -31,9 +31,9 @@ class BoardView {
     private void makeFieldButtons(int numRows, int numColumns) {
         for (int row = 0; row < numRows; row++) {
             for (int column = 0; column < numColumns; column++) {
-                FieldView fieldView = new DefaultFieldView();
-                fieldViews[row][column] = fieldView;
-                innerPanel.add(fieldView.getButton());
+                TileView tileView = new DefaultTileView();
+                tileViews[row][column] = tileView;
+                innerPanel.add(tileView.getButton());
             }
         }
     }
@@ -47,7 +47,7 @@ class BoardView {
         return panel;
     }
 
-    FieldView[][] getFieldViews() {
-        return fieldViews;
+    TileView[][] getTileViews() {
+        return tileViews;
     }
 }
