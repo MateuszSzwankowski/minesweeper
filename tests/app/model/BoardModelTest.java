@@ -28,7 +28,7 @@ public class BoardModelTest {
     }
 
     @Test
-    public void getFields() {
+    public void getTiles() {
         Tile[][] tiles = board.getTiles();
 
         assertEquals(tiles.length, numRows);
@@ -56,7 +56,7 @@ public class BoardModelTest {
     }
 
     @Test
-    public void getSurroundingFields() {
+    public void getSurroundingTiles() {
         Tile tile = board.getTiles()[0][0];
         HashSet<Tile> neighbours = board.getSurroundingTiles(tile);
         assertEquals(neighbours.size(), 3);
@@ -78,10 +78,10 @@ public class BoardModelTest {
     }
 
     @Test
-    public void decreaseFieldsToDiscover() {
+    public void decreaseTilesToDiscover() {
         board.activate();
-        int numFieldsToDiscover = numColumns * numRows - numMines;
-        for (int i = 0; i < numFieldsToDiscover; i++) {
+        int numTilesToDiscover = numColumns * numRows - numMines;
+        for (int i = 0; i < numTilesToDiscover; i++) {
             assertEquals(board.getState(), ACTIVE);
             board.decreaseTilesToDiscover();
         }
