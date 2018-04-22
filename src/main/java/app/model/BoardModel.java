@@ -3,8 +3,8 @@ package app.model;
 import app.MinesweeperConfig;
 import static app.model.BoardState.*;
 
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class BoardModel {
@@ -12,6 +12,7 @@ public class BoardModel {
     private final Tile[][] tiles;
     private final int numRows;
     private final int numColumns;
+    private final int numMines;
     private static Random rnd = new Random();
     private int tilesToDiscover;
     private BoardState state = BEFORE_START;
@@ -23,11 +24,10 @@ public class BoardModel {
     public BoardModel(MinesweeperConfig config) {
         numColumns = config.getNumColumns();
         numRows = config.getNumRows();
-        int numMines = config.getNumMines();
+        numMines = config.getNumMines();
         tilesToDiscover = numRows * numColumns - numMines;
         tiles = new Tile[numRows][numColumns];
         makeTiles();
-        placeMines(numMines);
     }
 
     private void makeTiles() {
@@ -38,23 +38,19 @@ public class BoardModel {
         }
     }
 
-    private void placeMines(int minesToPlace) {
-        while (minesToPlace > 0) {
-            int col = rnd.nextInt(numColumns);
-            int row = rnd.nextInt(numRows);
-            Tile tile = tiles[row][col];
-            if (!tile.isMine()) {
-                tile.putMine();
-                minesToPlace--;
-                getSurroundingTiles(tile).forEach(Tile::increaseMineCount);
-            }
-        }
-    }
+    public void placeMines(Tile excludedTile) {
+        List<Tile> tilesList = Arrays.stream(tiles)
+                .flatMap(Arrays::stream)
+                .collect(Collectors.toList());
 
-    public void repositionMine(Tile tile) {
-        tile.removeMine();
-        getSurroundingTiles(tile).forEach(Tile::decreaseMineCount);
-        placeMines(1);
+        tilesList.remove(excludedTile);
+
+        for (int i = 0; i < numMines; i++) {
+            int idx = rnd.nextInt(tilesList.size());
+            Tile tile = tilesList.remove(idx);
+            tile.putMine();
+            getSurroundingTiles(tile).forEach(Tile::increaseMineCount);
+        }
     }
 
     public HashSet<Tile> getSurroundingTiles(Tile tile) {

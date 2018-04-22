@@ -43,20 +43,6 @@ public class BoardModelTest {
     }
 
     @Test
-    public void repositionMine() {
-        Tile tileWithMine = board.getTiles()[2][2];
-        Tile repositionTarget = board.getTiles()[15][2];
-
-        assertTrue(tileWithMine.isMine());
-        assertFalse(repositionTarget.isMine());
-
-        board.repositionMine(tileWithMine);
-
-        assertFalse(tileWithMine.isMine());
-        assertTrue(repositionTarget.isMine());
-    }
-
-    @Test
     public void getSurroundingTiles() {
         Tile tile = board.getTiles()[0][0];
         HashSet<Tile> neighbours = board.getSurroundingTiles(tile);

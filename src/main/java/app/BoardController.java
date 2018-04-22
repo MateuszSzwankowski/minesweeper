@@ -55,6 +55,11 @@ class BoardController {
     }
 
     public void click(Tile tile, MouseEvent event) {
+        if (model.getState() == BEFORE_START) {
+            model.placeMines(tile);
+            model.activate();
+            GUI.startTimer();
+        }
         if (model.getState() != FINISHED) {
             if (SwingUtilities.isLeftMouseButton(event)) {
                 leftClick(tile);
@@ -67,12 +72,6 @@ class BoardController {
     private void leftClick(Tile tile) {
         if (tile.isFlagged()) {
             return;
-        } else if (model.getState() == BEFORE_START) {
-            model.activate();
-            GUI.startTimer();
-            if (tile.isMine()) {
-                model.repositionMine(tile);
-            }
         }
 
         if (tile.isRevealed()) {
