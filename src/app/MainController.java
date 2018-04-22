@@ -19,7 +19,7 @@ public class MainController
         boardModel = new BoardModel(config);
         GUI = new MainView(config);
         boardController = new BoardController(boardModel, GUI);
-        boardController.bindFields();
+        boardController.bindTiles();
         GUI.getRestartButton().addActionListener(e -> restart());
         GUI.getExitButton().addActionListener(e -> exit());
 
@@ -40,7 +40,7 @@ public class MainController
         GUI.rebuildBoard(config);
         boardModel = new BoardModel(config);
         boardController.setModel(boardModel);
-        boardController.bindFields();
+        boardController.bindTiles();
     }
 
      private void exit() {

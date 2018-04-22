@@ -13,7 +13,7 @@ public class BoardModel {
     private final int numRows;
     private final int numColumns;
     private static Random rnd = new Random();
-    private int fieldsToDiscover;
+    private int tilesToDiscover;
     private BoardState state = BEFORE_START;
 
     public static void setRandomSeed(int seed) {
@@ -24,13 +24,13 @@ public class BoardModel {
         numColumns = config.getNumColumns();
         numRows = config.getNumRows();
         int numMines = config.getNumMines();
-        fieldsToDiscover = numRows * numColumns - numMines;
+        tilesToDiscover = numRows * numColumns - numMines;
         tiles = new Tile[numRows][numColumns];
-        makeFields();
+        makeTiles();
         placeMines(numMines);
     }
 
-    private void makeFields() {
+    private void makeTiles() {
         for (int row = 0; row < numRows; row++) {
             for (int column = 0; column < numColumns; column++) {
                 tiles[row][column] = new Tile(row, column);
@@ -46,18 +46,18 @@ public class BoardModel {
             if (!tile.isMine()) {
                 tile.putMine();
                 minesToPlace--;
-                getSurroundingFields(tile).forEach(Tile::increaseMineCount);
+                getSurroundingTiles(tile).forEach(Tile::increaseMineCount);
             }
         }
     }
 
     public void repositionMine(Tile tile) {
         tile.removeMine();
-        getSurroundingFields(tile).forEach(Tile::decreaseMineCount);
+        getSurroundingTiles(tile).forEach(Tile::decreaseMineCount);
         placeMines(1);
     }
 
-    public HashSet<Tile> getSurroundingFields(Tile tile) {
+    public HashSet<Tile> getSurroundingTiles(Tile tile) {
         int row = tile.getRow();
         int column = tile.getColumn();
         HashSet<Tile> neighbours = new HashSet<>();
@@ -73,9 +73,9 @@ public class BoardModel {
         return neighbours;
     }
 
-    public void decreaseFieldsToDiscover() {
-        fieldsToDiscover--;
-        if (fieldsToDiscover == 0) state = FINISHED;
+    public void decreaseTilesToDiscover() {
+        tilesToDiscover--;
+        if (tilesToDiscover == 0) state = FINISHED;
     }
 
     public Tile[][] getTiles() {

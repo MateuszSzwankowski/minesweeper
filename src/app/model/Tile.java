@@ -38,9 +38,9 @@ public class Tile {
     }
 
     public void gameOver() {
-        if (isMine() && state.equals(HIDDEN)) {
+        if (isMine() && state == HIDDEN) {
             this.changeState(HIDDEN_MINE);
-        } else if (this.state.equals(FLAGGED) && !isMine()) {
+        } else if (state == FLAGGED && !isMine()) {
             changeState(FALSE_FLAG);
         }
     }
@@ -66,7 +66,7 @@ public class Tile {
     }
 
     public boolean isFlagged() {
-        return state.equals(FLAGGED);
+        return state == FLAGGED;
     }
 
     public void setFlag(boolean flag) {
@@ -75,7 +75,7 @@ public class Tile {
     }
 
     public boolean isRevealed() {
-        return state.equals(REVEALED);
+        return state == REVEALED;
     }
 
     public int getSurroundingMinesCount() {

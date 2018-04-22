@@ -21,14 +21,14 @@ class BoardView {
         innerPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         innerPanel.setLayout(new GridLayout(numRows, numColumns));
 
-        makeFieldButtons(numRows, numColumns);
+        makeTileButtons(numRows, numColumns);
 
         panel = new JScrollPane(innerPanel);
         panel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         panel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     }
 
-    private void makeFieldButtons(int numRows, int numColumns) {
+    private void makeTileButtons(int numRows, int numColumns) {
         for (int row = 0; row < numRows; row++) {
             for (int column = 0; column < numColumns; column++) {
                 TileView tileView = new DefaultTileView();

@@ -7,6 +7,7 @@ import app.view.MainView;
 import javax.swing.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Field;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void click() {
+    public void click() { // todo: burn all down and start again
         Tile[][] tiles = model.getTiles();
 
         controller.click(tiles[0][13], LEFT_CLICK);
@@ -73,15 +74,16 @@ public class BoardControllerTest {
     }
 
     @Test
-    public void getModel() {
-        assertEquals(model, controller.getModel());
-    }
+    public void setModel() throws Exception {
+        Field stateField = BoardController.class.getDeclaredField("model");
+        stateField.setAccessible(true);
 
-    @Test
-    public void setModel() {
-        BoardModel newModel = new BoardModel(MinesweeperConfig.INTERMEDIATE);
+        assertEquals(model, stateField.get(controller));
+
+        BoardModel newModel = new BoardModel(MinesweeperConfig.BEGINNER);
         controller.setModel(newModel);
-        assertNotEquals(model, controller.getModel());
+
+        assertNotEquals(model, stateField.get(controller));
     }
 
 }

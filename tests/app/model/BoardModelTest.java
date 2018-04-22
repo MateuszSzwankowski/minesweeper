@@ -6,9 +6,11 @@ import org.junit.Test;
 
 import java.util.HashSet;
 
+import static app.model.BoardState.*;
 import static org.junit.Assert.*;
 
 public class BoardModelTest {
+
     private BoardModel board;
     private int numRows;
     private int numColumns;
@@ -22,7 +24,7 @@ public class BoardModelTest {
         numRows = config.getNumRows();
 
         BoardModel.setRandomSeed(42);
-        board = new BoardModel(config);
+        board = new BoardModel(config); // todo: mock tiles
     }
 
     @Test
@@ -56,14 +58,14 @@ public class BoardModelTest {
     @Test
     public void getSurroundingFields() {
         Tile tile = board.getTiles()[0][0];
-        HashSet<Tile> neighbours = board.getSurroundingFields(tile);
+        HashSet<Tile> neighbours = board.getSurroundingTiles(tile);
         assertEquals(neighbours.size(), 3);
         assertTrue(neighbours.contains(board.getTiles()[0][1]));
         assertTrue(neighbours.contains(board.getTiles()[1][0]));
         assertTrue(neighbours.contains(board.getTiles()[1][1]));
 
         tile = board.getTiles()[1][1];
-        neighbours = board.getSurroundingFields(tile);
+        neighbours = board.getSurroundingTiles(tile);
         assertEquals(neighbours.size(), 8);
         assertTrue(neighbours.contains(board.getTiles()[0][0]));
         assertTrue(neighbours.contains(board.getTiles()[0][1]));
@@ -80,27 +82,27 @@ public class BoardModelTest {
         board.activate();
         int numFieldsToDiscover = numColumns * numRows - numMines;
         for (int i = 0; i < numFieldsToDiscover; i++) {
-            assertEquals(board.getState(), BoardState.ACTIVE);
-            board.decreaseFieldsToDiscover();
+            assertEquals(board.getState(), ACTIVE);
+            board.decreaseTilesToDiscover();
         }
-        assertEquals(board.getState(), BoardState.FINISHED);
+        assertEquals(board.getState(), FINISHED);
     }
 
     @Test
     public void activate() {
         board.activate();
-        assertEquals(board.getState(), BoardState.ACTIVE);
+        assertEquals(board.getState(), ACTIVE);
     }
 
     @Test
     public void deactivate() {
         board.deactivate();
-        assertEquals(board.getState(), BoardState.FINISHED);
+        assertEquals(board.getState(), FINISHED);
     }
 
     @Test
     public void getState() {
-        assertEquals(board.getState(), BoardState.BEFORE_START);
+        assertEquals(board.getState(), BEFORE_START);
     }
 
 }

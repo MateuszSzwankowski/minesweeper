@@ -111,7 +111,7 @@ public class MainView implements PropertyChangeListener {
         return menu.getNewGameButtons();
     }
 
-    public TileView[][] getFieldViews() {
+    public TileView[][] getTileViews() {
         return boardView.getTileViews();
     }
 
