@@ -1,8 +1,7 @@
-package test.java.app.model;
+package app.model;
 
-import main.java.app.model.Tile;
-import main.java.app.TileState;
-import static main.java.app.TileState.*;
+import app.TileState;
+import static app.TileState.*;
 
 import java.lang.reflect.Field;
 import org.junit.Before;

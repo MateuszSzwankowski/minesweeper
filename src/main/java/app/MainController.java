@@ -1,13 +1,13 @@
-package main.java.app;
+package app;
 
-import main.java.app.model.BoardModel;
-import main.java.app.view.MainView;
+import app.model.BoardModel;
+import app.view.MainView;
 
 import javax.swing.*;
 import java.util.HashMap;
 
 
-public class MainController
+class MainController
 {
 
     private final BoardController boardController;

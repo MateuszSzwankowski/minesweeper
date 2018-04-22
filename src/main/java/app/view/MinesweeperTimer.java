@@ -1,4 +1,4 @@
-package main.java.app.view;
+package app.view;
 
 import javax.swing.*;
 import javax.swing.event.SwingPropertyChangeSupport;

@@ -1,4 +1,4 @@
-package main.java.app.view;
+package app.view;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -7,10 +7,10 @@ import java.awt.*;
 
 class TopPanel {
 
-    private JPanel panel;
-    private JLabel flagsLbl;
-    private JLabel timerLbl;
-    private JButton restartBtn;
+    private final JPanel panel;
+    private final JLabel flagsLbl;
+    private final JLabel timerLbl;
+    private final JButton restartBtn;
     private int numMines;
 
     TopPanel(int numMines) {

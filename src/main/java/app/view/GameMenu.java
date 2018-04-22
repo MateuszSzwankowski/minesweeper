@@ -1,6 +1,6 @@
-package main.java.app.view;
+package app.view;
 
-import main.java.app.MinesweeperConfig;
+import app.MinesweeperConfig;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -8,9 +8,9 @@ import java.util.HashMap;
 
 class GameMenu {
 
-    private JMenuBar menuBar;
-    private JMenuItem exitMenuItem;
-    private HashMap<MinesweeperConfig, JMenuItem> newGameItems;
+    private final JMenuBar menuBar;
+    private final JMenuItem exitMenuItem;
+    private final HashMap<MinesweeperConfig, JMenuItem> newGameItems;
 
     GameMenu() {
         menuBar = new JMenuBar();

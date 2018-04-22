@@ -1,6 +1,6 @@
-package main.java.app.view;
+package app.view;
 
-import main.java.app.MinesweeperConfig;
+import app.MinesweeperConfig;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;

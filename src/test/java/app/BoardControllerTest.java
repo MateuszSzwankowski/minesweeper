@@ -1,11 +1,8 @@
-package test.java.app;
+package app;
 
-import main.java.app.model.BoardModel;
-import main.java.app.MinesweeperConfig;
-import main.java.app.BoardController;
-import main.java.app.model.Tile;
-import main.java.app.view.MainView;
-
+import app.model.BoardModel;
+import app.model.Tile;
+import app.view.MainView;
 import javax.swing.*;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
@@ -20,9 +17,9 @@ import static org.junit.Assert.*;
 public class BoardControllerTest {
     private BoardController controller;
     private BoardModel model;
-    private MouseEvent LEFT_CLICK = new MouseEvent(new JButton(), 0, 0,
+    private final MouseEvent LEFT_CLICK = new MouseEvent(new JButton(), 0, 0,
                 InputEvent.BUTTON1_DOWN_MASK, 100, 100, 1, false);
-    private MouseEvent RIGHT_CLICK = new MouseEvent(new JButton(), 0, 0,
+    private final MouseEvent RIGHT_CLICK = new MouseEvent(new JButton(), 0, 0,
                 InputEvent.BUTTON3_DOWN_MASK, 100, 100, 1, false);
 
 

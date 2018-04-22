@@ -1,4 +1,4 @@
-package main.java.app.model;
+package app.model;
 
 public enum BoardState {
 

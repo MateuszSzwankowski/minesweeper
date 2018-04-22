@@ -1,4 +1,4 @@
-package main.java.app.view;
+package app.view;
 
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;

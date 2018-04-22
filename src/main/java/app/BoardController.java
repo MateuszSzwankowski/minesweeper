@@ -1,10 +1,10 @@
-package main.java.app;
+package app;
 
-import main.java.app.model.Tile;
-import main.java.app.view.TileView;
-import main.java.app.view.MainView;
-import main.java.app.model.BoardModel;
-import static main.java.app.model.BoardState.*;
+import app.model.Tile;
+import app.view.TileView;
+import app.view.MainView;
+import app.model.BoardModel;
+import static app.model.BoardState.*;
 
 import javax.swing.*;
 import javax.swing.event.SwingPropertyChangeSupport;
@@ -13,7 +13,7 @@ import java.awt.event.*;
 import java.util.Set;
 
 
-public class BoardController {
+class BoardController {
 
     private BoardModel model;
     private final MainView GUI;
@@ -21,7 +21,7 @@ public class BoardController {
     private final Set<Tile> tilesToReveal = new HashSet<>();
     private final SwingPropertyChangeSupport flagsLabelUpdater;
 
-    public BoardController(BoardModel model, MainView GUI) {
+    BoardController(BoardModel model, MainView GUI) {
         this.model = model;
         this.GUI = GUI;
 
@@ -44,7 +44,7 @@ public class BoardController {
                 tileView.setSurroundingMinesCount(tile.getSurroundingMinesCount());
                 tile.getStateChangeSupport().addPropertyChangeListener("state", tileView);
                 tile.getMineCountChangeSupport().addPropertyChangeListener("mineCount", tileView);
-                tileView.getButton().addMouseListener((main.java.app.MousePressedListener)(e)-> click(tile, e));
+                tileView.getButton().addMouseListener((MousePressedListener)(e)-> click(tile, e));
             }
         }
     }

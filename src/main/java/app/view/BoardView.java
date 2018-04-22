@@ -1,6 +1,6 @@
-package main.java.app.view;
+package app.view;
 
-import main.java.app.MinesweeperConfig;
+import app.MinesweeperConfig;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -11,7 +11,7 @@ class BoardView {
 
     private final JPanel innerPanel;
     private final JScrollPane panel;
-    private TileView[][] tileViews;
+    private final TileView[][] tileViews;
 
     BoardView(MinesweeperConfig config) {
         int numColumns = config.getNumColumns();

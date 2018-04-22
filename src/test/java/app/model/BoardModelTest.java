@@ -1,9 +1,8 @@
-package test.java.app.model;
+package app.model;
 
-import main.java.app.MinesweeperConfig;
-import main.java.app.model.BoardModel;
-import main.java.app.model.Tile;
-import static main.java.app.model.BoardState.*;
+import app.MinesweeperConfig;
+
+import static app.model.BoardState.*;
 
 import java.util.HashSet;
 import org.junit.Before;

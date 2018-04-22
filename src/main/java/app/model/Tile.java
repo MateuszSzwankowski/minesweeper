@@ -1,7 +1,7 @@
-package main.java.app.model;
+package app.model;
 
-import main.java.app.TileState;
-import static main.java.app.TileState.*;
+import app.TileState;
+import static app.TileState.*;
 
 import javax.swing.event.SwingPropertyChangeSupport;
 
@@ -16,7 +16,7 @@ public class Tile {
     private boolean mine = false;
     private int mineCount = 0;
 
-    public Tile(int row, int column) {
+    Tile(int row, int column) {
         this.row = row;
         this.column = column;
         stateChange = new SwingPropertyChangeSupport(this);

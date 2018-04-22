@@ -1,6 +1,6 @@
-package main.java.app.view;
+package app.view;
 
-import main.java.app.TileState;
+import app.TileState;
 
 import javax.swing.*;
 import java.awt.*;

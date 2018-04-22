@@ -1,11 +1,9 @@
-package main.java;
-
-import main.java.app.MainController;
+package app;
 
 import javax.swing.*;
 
 
-public class Main {
+class Main {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainController::new);

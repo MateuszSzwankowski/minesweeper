@@ -1,7 +1,7 @@
-package main.java.app.model;
+package app.model;
 
-import main.java.app.MinesweeperConfig;
-import static main.java.app.model.BoardState.*;
+import app.MinesweeperConfig;
+import static app.model.BoardState.*;
 
 import java.util.HashSet;
 import java.util.Random;
