@@ -24,14 +24,12 @@ class BoardController {
     BoardController(BoardModel model, MainView GUI) {
         this.model = model;
         this.GUI = GUI;
-
         flagsLabelUpdater = new SwingPropertyChangeSupport(this);
         flagsLabelUpdater.addPropertyChangeListener("flags", GUI);
     }
 
     public void setModel(BoardModel boardModel) {
         model = boardModel;
-        reset();
     }
 
     void bindTiles() {
@@ -49,11 +47,6 @@ class BoardController {
         }
     }
 
-    private void reset() {
-        numFlags = 0;
-        tilesToReveal.clear();
-    }
-
     public void click(Tile tile, MouseEvent event) {
         if (model.getState() == BEFORE_START) {
             model.placeMines(tile);
@@ -63,7 +56,8 @@ class BoardController {
         if (model.getState() != FINISHED) {
             if (SwingUtilities.isLeftMouseButton(event)) {
                 leftClick(tile);
-            } else if (SwingUtilities.isRightMouseButton(event)) {
+            } else if (SwingUtilities.isRightMouseButton(event)
+                    && model.getState() == ACTIVE) {
                 rightClick(tile);
             }
         }
@@ -84,7 +78,7 @@ class BoardController {
     }
 
     private void rightClick(Tile tile) {
-        if (!tile.isRevealed() && model.getState() == ACTIVE) {
+        if (!tile.isRevealed()) {
             if (!tile.isFlagged()) {
                 tile.setFlag(true);
                 numFlags++;
@@ -118,12 +112,14 @@ class BoardController {
         }
     }
 
+
+
     private void revealNeighbours(Tile tile) {
         if (anyTilesToReveal()) {
             enqueueNeighboursToReveal(tile);
         } else {
             enqueueNeighboursToReveal(tile);
-            while (!tilesToReveal.isEmpty() && model.getState() == ACTIVE) {
+            while (!tilesToReveal.isEmpty()) {
                 Tile neighbour = tilesToReveal.iterator().next();
                 tilesToReveal.remove(neighbour);
                 revealTile(neighbour);
@@ -164,6 +160,8 @@ class BoardController {
 
     private void gameFinished(boolean win) {
         if (win) showFlags(); else showMines();
+        numFlags = 0;
+        tilesToReveal.clear();
         GUI.stopTimer();
         model.deactivate();
     }
