@@ -1,5 +1,5 @@
 # minesweeper
-Classic minesweeper clone with Swing GUI. Work in progress - BoardController unit tests are broken at the moment.
+Classic minesweeper clone with Swing GUI. Work in progress.
 
 ### Available difficulties (rows, columns, mines):
 * beginner (9, 9, 10)
@@ -9,6 +9,7 @@ Classic minesweeper clone with Swing GUI. Work in progress - BoardController uni
 * insane (50, 50, 625)
 
 ### TODO:
-* update unit tests  
+* improve unit tests
 * user-defined difficulties  
 * best scores list  
+* add alternative GUI layouts

@@ -48,19 +48,25 @@ class BoardController {
     }
 
     public void click(Tile tile, MouseEvent event) {
-        if (model.getState() == BEFORE_START) {
-            model.placeMines(tile);
-            model.activate();
-            GUI.startTimer();
+        if (model.getState() == FINISHED) {
+            return;
         }
-        if (model.getState() != FINISHED) {
-            if (SwingUtilities.isLeftMouseButton(event)) {
-                leftClick(tile);
-            } else if (SwingUtilities.isRightMouseButton(event)
-                    && model.getState() == ACTIVE) {
-                rightClick(tile);
+
+        if (SwingUtilities.isLeftMouseButton(event)) {
+            if (model.getState() == BEFORE_START) {
+                startGame(tile);
             }
+            leftClick(tile);
+        } else if (SwingUtilities.isRightMouseButton(event)
+                && model.getState() == ACTIVE) {
+            rightClick(tile);
         }
+    }
+
+    private void startGame(Tile firstClickTile) {
+        model.placeMines(firstClickTile);
+        model.activate();
+        GUI.startTimer();
     }
 
     private void leftClick(Tile tile) {
